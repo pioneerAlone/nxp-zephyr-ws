@@ -29,7 +29,6 @@ __pycache__/
 .pytest_cache/
 
 # IDE 配置 (命令行开发不需要)
-.vscode/
 .idea/
 *.swp
 *.swo

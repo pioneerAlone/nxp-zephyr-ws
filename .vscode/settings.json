@@ -1,0 +1,14 @@
+{
+  "zephyr.base": "${workspaceFolder}/nxp-zsdk/zephyr",
+  "zephyr.sdk": "",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "cmake.configureOnOpen": false,
+  "C_Cpp.default.compilerPath": "/usr/local/arm-none-eabi/bin/arm-none-eabi-gcc",
+  "terminal.integrated.profiles.osx": {
+    "Zephyr Bash": {
+      "path": "/bin/bash",
+      "args": ["-c", "source ~/nxp-zephyr-ws/setup_env.sh && exec bash"]
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "Zephyr Bash"
+}
