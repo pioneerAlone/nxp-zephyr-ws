@@ -51,7 +51,9 @@ build/
 # ----------------------------------------
 # IDE
 # ----------------------------------------
-.vscode/
+# Keep project-level VSCode settings
+.vscode/*
+!.vscode/settings.json
 .idea/
 *.swp
 *.swo

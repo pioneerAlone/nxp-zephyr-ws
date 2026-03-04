@@ -1,14 +1,55 @@
 {
+  // Zephyr 配置
   "zephyr.base": "${workspaceFolder}/nxp-zsdk/zephyr",
   "zephyr.sdk": "",
+
+  // Python 配置 (使用工作区内的虚拟环境)
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": false,
+
+  // CMake 配置
   "cmake.configureOnOpen": false,
-  "C_Cpp.default.compilerPath": "/usr/local/arm-none-eabi/bin/arm-none-eabi-gcc",
+
+  // C/C++ 配置 (ARM GCC 路径由 setup_env.sh 设置)
+  // 如果系统已安装 ARM GCC，可取消注释并修改路径：
+  // "C_Cpp.default.compilerPath": "/usr/local/arm-none-eabi/bin/arm-none-eabi-gcc",
+
+  // 文件排除
+  "files.exclude": {
+    "**/.git": true,
+    "**/.venv": true,
+    "**/build": true,
+    "**/__pycache__": true
+  },
+
+  // macOS 终端配置
   "terminal.integrated.profiles.osx": {
     "Zephyr Bash": {
       "path": "/bin/bash",
-      "args": ["-c", "source ~/nxp-zephyr-ws/setup_env.sh && exec bash"]
+      "args": ["-c", "source \"${workspaceFolder}/setup_env.sh\" && exec bash"]
     }
   },
-  "terminal.integrated.defaultProfile.osx": "Zephyr Bash"
+  "terminal.integrated.defaultProfile.osx": "Zephyr Bash",
+
+  // Linux 终端配置
+  "terminal.integrated.profiles.linux": {
+    "Zephyr Bash": {
+      "path": "/bin/bash",
+      "args": ["-c", "source \"${workspaceFolder}/setup_env.sh\" && exec bash"]
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "Zephyr Bash",
+
+  // Windows 终端配置 (Git Bash)
+  "terminal.integrated.profiles.windows": {
+    "Zephyr Bash": {
+      "path": "C:\\Program Files\\Git\\bin\\bash.exe",
+      "args": ["-c", "source \"${workspaceFolder}/setup_env.sh\" && exec bash"]
+    },
+    "PowerShell": {
+      "source": "PowerShell",
+      "args": ["-NoExit", "-Command", ". \"${workspaceFolder}\\.venv\\Scripts\\Activate.ps1\""]
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "Zephyr Bash"
 }
