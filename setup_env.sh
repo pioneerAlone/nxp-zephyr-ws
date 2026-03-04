@@ -101,11 +101,53 @@ resolve_sdk_version() {
 
 OS=$(detect_os)
 
+# WORKSPACE 路径检测
+# 在 bash -c "source setup_env.sh" 模式下，$0 是 "-bash" 不可用
+# 需要使用备选方法检测工作区路径
+detect_workspace() {
+    # 方法1: $0 是有效脚本路径
+    if [[ -f "${BASH_SOURCE[0]}" ]] && [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+        cd "$(dirname "${BASH_SOURCE[0]}")" && pwd
+        return
+    fi
+    
+    # 方法2: 当前目录有 setup_env.sh
+    if [[ -f "$PWD/setup_env.sh" ]]; then
+        echo "$PWD"
+        return
+    fi
+    
+    # 方法3: 已设置 ZEPHYR_WS 环境变量
+    if [[ -n "$ZEPHYR_WS" ]] && [[ -f "$ZEPHYR_WS/setup_env.sh" ]]; then
+        echo "$ZEPHYR_WS"
+        return
+    fi
+    
+    # 方法4: 向上查找包含 setup_env.sh 的目录
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -f "$dir/setup_env.sh" ]]; then
+            echo "$dir"
+            return
+        fi
+        dir=$(dirname "$dir")
+    done
+    
+    # 方法5: 回退到 $0（可能在传统 source 模式下工作）
+    if [[ -f "$0" ]] && [[ "$0" != "-bash" ]] && [[ "$0" != "bash" ]]; then
+        cd "$(dirname "$0")" && pwd
+        return
+    fi
+    
+    # 最后回退到当前目录
+    echo "$PWD"
+}
+
 if [[ "$OS" == "windows" ]]; then
-    WORKSPACE="$(cygpath -m "$(cd "$(dirname "$0")" && pwd)")"
+    WORKSPACE="$(cygpath -m "$(detect_workspace)")"
     HOME_DIR="$USERPROFILE"
 else
-    WORKSPACE="$(cd "$(dirname "$0")" && pwd)"
+    WORKSPACE="$(detect_workspace)"
     HOME_DIR="$HOME"
 fi
 
@@ -372,7 +414,10 @@ print_summary() {
     echo "  SDK_VERSION=latest source setup_env.sh --init-sdk"
     echo ""
     echo "Build:"
-    echo "  cd \$ZEPHYR_WS && west build -b fcm363x"
+    echo "  cd \$ZEPHYR_WS/fcm363x-examples/hello && west build -b fcm363x"
+    echo ""
+    echo "Flash (JLink):"
+    echo "  west flash"
     echo ""
 }
 
@@ -431,6 +476,12 @@ main() {
     setup_zephyr
     setup_path
     print_summary
+    
+    # 设置提示符：显示 venv 激活状态和当前目录
+    # 仅在交互式 shell 中设置
+    if [[ $- == *i* ]] || [[ -n "$PS1" ]]; then
+        export PS1="(.venv) \w\$ "
+    fi
 }
 
 main "$@"

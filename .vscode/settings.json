@@ -3,8 +3,8 @@
   "zephyr.base": "${workspaceFolder}/nxp-zsdk/zephyr",
   "zephyr.sdk": "",
 
-  // Python 配置 (使用工作区内的虚拟环境)
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  // Python 配置 (使用相对路径，VSCode 会相对于 workspaceFolder 解析)
+  "python.defaultInterpreterPath": ".venv/bin/python",
   "python.terminal.activateEnvironment": false,
 
   // CMake 配置
@@ -22,11 +22,18 @@
     "**/__pycache__": true
   },
 
+  // 终端工作目录 (VSCode 会先切换到此目录再启动 shell)
+  "terminal.integrated.cwd": "${workspaceFolder}",
+
   // macOS 终端配置
+  // --init-file 让 bash 启动时执行 setup_env.sh
   "terminal.integrated.profiles.osx": {
     "Zephyr Bash": {
       "path": "/bin/bash",
-      "args": ["-c", "source \"${workspaceFolder}/setup_env.sh\" && exec bash"]
+      "args": ["--init-file", "setup_env.sh"]
+    },
+    "bash": {
+      "path": "/bin/bash"
     }
   },
   "terminal.integrated.defaultProfile.osx": "Zephyr Bash",
@@ -35,21 +42,23 @@
   "terminal.integrated.profiles.linux": {
     "Zephyr Bash": {
       "path": "/bin/bash",
-      "args": ["-c", "source \"${workspaceFolder}/setup_env.sh\" && exec bash"]
+      "args": ["--init-file", "setup_env.sh"]
+    },
+    "bash": {
+      "path": "/bin/bash"
     }
   },
   "terminal.integrated.defaultProfile.linux": "Zephyr Bash",
 
   // Windows 终端配置 (Git Bash)
   "terminal.integrated.profiles.windows": {
-    "Zephyr Bash": {
+    "Git Bash": {
       "path": "C:\\Program Files\\Git\\bin\\bash.exe",
-      "args": ["-c", "source \"${workspaceFolder}/setup_env.sh\" && exec bash"]
+      "args": ["--init-file", "setup_env.sh"]
     },
     "PowerShell": {
-      "source": "PowerShell",
-      "args": ["-NoExit", "-Command", ". \"${workspaceFolder}\\.venv\\Scripts\\Activate.ps1\""]
+      "source": "PowerShell"
     }
   },
-  "terminal.integrated.defaultProfile.windows": "Zephyr Bash"
+  "terminal.integrated.defaultProfile.windows": "Git Bash"
 }
