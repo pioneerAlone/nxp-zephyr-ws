@@ -1,0 +1,6 @@
+[submodule "fcm363x-board"]
+	path = fcm363x-board
+	url = https://github.com/pioneerAlone/fcm363x-board.git
+[submodule "fcm363x-examples"]
+	path = fcm363x-examples
+	url = https://github.com/pioneerAlone/fcm363x-examples.git
