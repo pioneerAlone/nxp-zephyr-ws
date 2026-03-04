@@ -3,13 +3,10 @@
 # ========================================
 
 # ----------------------------------------
-# Sub-projects (managed independently)
+# Submodules (managed by Git)
 # ----------------------------------------
-/fcm363x-board/
-/projects/*/
-
-# Keep projects directory
-!/projects/.gitkeep
+# fcm363x-board and fcm363x-examples are submodules
+# Their contents are tracked by .gitmodules
 
 # ----------------------------------------
 # Tools (cloned from external repos)
